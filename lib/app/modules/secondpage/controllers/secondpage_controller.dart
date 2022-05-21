@@ -1,7 +1,15 @@
 import 'package:get/get.dart';
 
 class SecondpageController extends GetxController {
-  //TODO: Implement SecondpageController
+  var count = 0.obs;
+  increment() => count++;
+  decrement() {
+    if (count < 1) {
+      return;
+    } else {
+      count--;
+    }
+  }
 
   @override
   void onInit() {
