@@ -6,7 +6,7 @@ class SecondpageBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<SecondpageController>(
-      () => SecondpageController(),
+      () => SecondpageController(shopRepository: Get.find()),
     );
   }
 }

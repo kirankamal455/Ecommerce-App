@@ -1,4 +1,5 @@
 import 'package:calzada/app/core/theme/app_colors.dart';
+import 'package:calzada/app/global/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -9,28 +10,7 @@ class FirstpageView extends GetView<FirstpageController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: cream,
-        elevation: 0,
-        actions: [
-          SizedBox(
-            width: 10,
-          ),
-          Icon(Icons.card_giftcard, color: green),
-          SizedBox(width: 160),
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.search),
-            color: green,
-          ),
-          IconButton(
-              onPressed: () {}, icon: const Icon(Icons.menu), color: green),
-          IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.shopping_cart),
-              color: green)
-        ],
-      ),
+      appBar: CustomAppBar(),
       body: Padding(
         padding: const EdgeInsets.only(left: 25),
         child: Container(

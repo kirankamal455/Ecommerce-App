@@ -9,10 +9,12 @@ abstract class Routes {
   static const HOME = _Paths.HOME;
   static const FIRSTPAGE = _Paths.FIRSTPAGE;
   static const SECONDPAGE = _Paths.SECONDPAGE;
+  static const CARTPAGE = _Paths.CARTPAGE;
 }
 
 abstract class _Paths {
   static const HOME = '/home';
   static const FIRSTPAGE = '/firstpage';
   static const SECONDPAGE = '/secondpage';
+  static const CARTPAGE = '/cartpage';
 }
