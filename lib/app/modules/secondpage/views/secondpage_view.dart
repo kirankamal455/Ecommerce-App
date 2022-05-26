@@ -1,18 +1,23 @@
 import 'package:calzada/app/core/theme/app_colors.dart';
-import 'package:calzada/app/global/widgets/app_bar.dart';
+import 'package:calzada/app/global/widgets/commonapp_bar.dart';
+import 'package:calzada/app/modules/cartpage/controllers/cartpage_controller.dart';
+import 'package:intl/intl.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import 'package:get/get.dart';
 
 import '../controllers/secondpage_controller.dart';
 
 class SecondpageView extends GetView<SecondpageController> {
-  static String id1 = Get.arguments.toString();
+  final CartpageController cartpageController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: CustomAppBar(),
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(60),
+          child: CommonAppBar(),
+        ),
         body: controller.obx(
           (shopData) => shopData != null
               ? ListView(
@@ -24,9 +29,8 @@ class SecondpageView extends GetView<SecondpageController> {
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                            scale: 2,
-                            image:
-                                AssetImage("assets/images/washingmachine.png"),
+                            scale: 1,
+                            image: NetworkImage(shopData.image, scale: 6),
                           ),
                           color: Colors.white,
                           // borderRadius: BorderRadius.circular(15)
@@ -39,7 +43,7 @@ class SecondpageView extends GetView<SecondpageController> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(shopData[1].title.toString(),
+                            Text(shopData.title.toString(),
                                 style: TextStyle(
                                     fontSize: 30,
                                     fontWeight: FontWeight.bold,
@@ -58,31 +62,16 @@ class SecondpageView extends GetView<SecondpageController> {
                                 SizedBox(
                                   width: 4,
                                 ),
-                                Text('466 Sold | 44 Stock Left '),
+                                // Text('466 Sold | 44 Stock Left '),
                               ],
                             ),
                             Text(
-                              'P96.00',
+                              shopData.price.toString(),
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 25,
                                   color: Colors.green),
                             ),
-                            // RatingBar.builder(
-                            //   initialRating: 3,
-                            //   minRating: 1,
-                            //   direction: Axis.horizontal,
-                            //   allowHalfRating: true,
-                            //   itemCount: 5,
-                            //   itemPadding: EdgeInsets.symmetric(horizontal: 0),
-                            //   itemBuilder: (context, _) => Icon(
-                            //     Icons.star,
-                            //     color: Colors.amber,
-                            //   ),
-                            //   onRatingUpdate: (rating) {
-                            //     print(rating);
-                            //   },
-                            // ),
                           ],
                         ),
                       ),
@@ -103,6 +92,7 @@ class SecondpageView extends GetView<SecondpageController> {
                                 ),
                                 onPressed: () {
                                   controller.decrement();
+                                  print('Count is : ${controller.count}');
                                 },
                                 color: Colors.white,
                               ),
@@ -135,6 +125,7 @@ class SecondpageView extends GetView<SecondpageController> {
                                 color: Colors.white,
                                 onPressed: () {
                                   controller.increment();
+                                  print('Count is : ${controller.count}');
                                 },
                               ),
                             ),
@@ -154,7 +145,16 @@ class SecondpageView extends GetView<SecondpageController> {
                                     MaterialStateProperty.all<Color>(creamDark),
                               ),
                               onPressed: () {
-                                print("You pressed Icon Elevated Button");
+                                var now = DateTime.now();
+                                var formatter = DateFormat('yyyy-MM-dd');
+                                String formattedDate = formatter.format(now);
+                                print(formattedDate);
+                                cartpageController.addTocart(
+                                    productId: shopData.id.toString(),
+                                    userId: '1',
+                                    date: formattedDate,
+                                    quantity: controller.count.toString());
+                                Get.toNamed('/cartpage');
                               },
                               icon: Icon(Icons
                                   .shopping_cart), //icon data for elevated button
@@ -178,7 +178,7 @@ class SecondpageView extends GetView<SecondpageController> {
                         ],
                       ),
                     ),
-                    Text('The Apollotech B340')
+                    Text(shopData.description)
                   ],
                 )
               : const Center(child: Text("No product")),

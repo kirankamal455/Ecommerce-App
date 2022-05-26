@@ -1,5 +1,6 @@
 import 'package:calzada/app/core/theme/app_colors.dart';
 import 'package:calzada/app/global/widgets/app_bar.dart';
+import 'package:calzada/app/global/widgets/commonapp_bar.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -10,7 +11,10 @@ class FirstpageView extends GetView<FirstpageController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(60),
+        child: CommonAppBar(),
+      ),
       body: Padding(
         padding: const EdgeInsets.only(left: 25),
         child: Container(

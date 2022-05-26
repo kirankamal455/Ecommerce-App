@@ -7,6 +7,10 @@ class FirstpageController extends GetxController {
   //TODO: Implement FirstpageController
 
   final count = 0.obs;
+  @override
+  void onInit() {
+    super.onInit();
+  }
 
   @override
   void onReady() {

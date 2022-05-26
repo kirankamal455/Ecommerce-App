@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-class Shop {
+class Product {
   final int id;
   final String title;
   final double price;
@@ -8,7 +8,7 @@ class Shop {
   final String category;
   final String image;
   final Rating rating;
-  Shop({
+  Product({
     required this.id,
     required this.title,
     required this.price,
@@ -18,7 +18,7 @@ class Shop {
     required this.rating,
   });
 
-  Shop copyWith({
+  Product copyWith({
     int? id,
     String? title,
     double? price,
@@ -27,7 +27,7 @@ class Shop {
     String? image,
     Rating? rating,
   }) {
-    return Shop(
+    return Product(
       id: id ?? this.id,
       title: title ?? this.title,
       price: price ?? this.price,
@@ -52,8 +52,8 @@ class Shop {
     return result;
   }
 
-  factory Shop.fromMap(Map<String, dynamic> map) {
-    return Shop(
+  factory Product.fromMap(Map<String, dynamic> map) {
+    return Product(
       id: map['id']?.toInt() ?? 0,
       title: map['title'] ?? '',
       price: map['price']?.toDouble() ?? 0.0,
@@ -66,7 +66,8 @@ class Shop {
 
   String toJson() => json.encode(toMap());
 
-  factory Shop.fromJson(String source) => Shop.fromMap(json.decode(source));
+  factory Product.fromJson(String source) =>
+      Product.fromMap(json.decode(source));
 
   @override
   String toString() {
@@ -77,7 +78,7 @@ class Shop {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is Shop &&
+    return other is Product &&
         other.id == id &&
         other.title == title &&
         other.price == price &&

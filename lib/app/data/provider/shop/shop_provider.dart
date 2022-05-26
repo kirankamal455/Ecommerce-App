@@ -13,14 +13,12 @@ class ShopProvider implements IShopProvider {
   ShopProvider() {
     dio = Dio();
     dio.options.baseUrl = "https://fakestoreapi.com";
-    dio.options.connectTimeout = 5000;
-    dio.options.receiveTimeout = 3000;
+    dio.options.connectTimeout = 30000;
+    dio.options.receiveTimeout = 30000;
     dio.interceptors.addAll([
       dioLoggerInterceptor,
       RetryInterceptor(
           dio: dio,
-          // specify log function (optional)
-          // retry count (optional)
           retries: 2,
           retryDelays: [
             const Duration(seconds: 1),
@@ -28,10 +26,8 @@ class ShopProvider implements IShopProvider {
             const Duration(seconds: 3),
           ],
           retryEvaluator: (error, i) {
-            // only retry on DioError
             if (error.type == DioErrorType.other &&
                 error.error is SocketException) {
-              // only retry on timeout error
               return true;
             } else {
               return false;
@@ -42,12 +38,59 @@ class ShopProvider implements IShopProvider {
   }
 
   @override
-  Future<Response> getData() async {
+  Future<Response> getAllproducts() async {
     return await dio.get("/products");
   }
 
   @override
-  Future<Response> productData({required String id}) async {
+  Future<Response> getASingleProduct({required int id}) async {
     return await dio.get("/products/$id");
+  }
+
+  @override
+  Future<Response> getAllCategories() async {
+    return await dio.get("/products/categories");
+  }
+
+  @override
+  Future<Response> getProductsSpecificCategory(
+      {required String category}) async {
+    return await dio.get("/products/category/$category");
+  }
+
+  @override
+  Future<Response> getAllCarts() async {
+    return await dio.get("/carts/user/1");
+  }
+
+  @override
+  Future<Response> getSingleCart({required String cartid}) async {
+    return await dio.get("/carts/$cartid");
+  }
+
+  @override
+  Future<Response> addToCart(
+      {required String userId,
+      required String date,
+      required String productId,
+      required String quantity}) async {
+    var respose = await dio.post("/carts", data: {
+      ' userId': userId,
+      'date': date,
+      ' products': [
+        {'productId': productId, 'quantity': quantity},
+      ]
+    });
+    return respose;
+  }
+
+  @override
+  Future<Response> deleteACart({required int id}) async {
+    return await dio.delete('/carts/$id');
+  }
+
+  @override
+  Future<Response> sortResult() async {
+    return await dio.get('/products?sort=desc');
   }
 }

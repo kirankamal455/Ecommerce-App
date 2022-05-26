@@ -11,7 +11,7 @@ void main() {
       title: "Application",
       theme: appThemeData,
       debugShowCheckedModeBanner: false,
-      initialRoute: Routes.FIRSTPAGE,
+      initialRoute: Routes.CARTPAGE,
       getPages: AppPages.routes,
     ),
   );

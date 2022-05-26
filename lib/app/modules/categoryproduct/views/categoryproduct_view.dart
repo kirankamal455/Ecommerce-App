@@ -1,31 +1,26 @@
 import 'package:calzada/app/core/theme/app_colors.dart';
-
-import 'package:calzada/app/global/widgets/app_bar.dart';
 import 'package:calzada/app/global/widgets/custom_rating_bar.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
-import '../controllers/home_controller.dart';
+import '../controllers/categoryproduct_controller.dart';
 
-class HomeView extends GetView<HomeController> {
+class CategoryproductView extends GetView<CategoryproductController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-          preferredSize: Size.fromHeight(60),
-          child: controller.obx(
-            (products) => products != null
-                ? CustomAppBar(productList: products)
-                : Text("No Products"),
-          )),
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(controller.category),
+      ),
       body: Padding(
         padding: const EdgeInsets.only(left: 15, right: 15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Container(
-            //   child: Text(l
+            //   child: Text(
             //     'Appliances Department',
             //     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
             //   ),
@@ -35,7 +30,7 @@ class HomeView extends GetView<HomeController> {
             ),
             Expanded(
               child: controller.obx(
-                (shopData) => shopData != null
+                (category) => category != null
                     ? GridView.builder(
                         gridDelegate:
                             const SliverGridDelegateWithMaxCrossAxisExtent(
@@ -43,10 +38,9 @@ class HomeView extends GetView<HomeController> {
                                 childAspectRatio: 3 / 4,
                                 crossAxisSpacing: 10,
                                 mainAxisSpacing: 10),
-                        itemCount: shopData.length,
+                        itemCount: category.length,
                         itemBuilder: (BuildContext ctx, index) {
-                          // CustomAppBar.listdata(productList: shopData);
-                          var shopDatas = shopData[index];
+                          var shopDatas = category[index];
                           return GestureDetector(
                             child: Container(
                               alignment: Alignment.center,
@@ -140,7 +134,7 @@ class HomeView extends GetView<HomeController> {
                         ),
                         ElevatedButton(
                             onPressed: () {
-                              controller.getProduct();
+                              // controller.getProduct();
                             },
                             child: Text('Retry')),
                       ],

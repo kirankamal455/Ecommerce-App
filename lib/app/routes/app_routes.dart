@@ -10,6 +10,9 @@ abstract class Routes {
   static const FIRSTPAGE = _Paths.FIRSTPAGE;
   static const SECONDPAGE = _Paths.SECONDPAGE;
   static const CARTPAGE = _Paths.CARTPAGE;
+  static const SEARCH = _Paths.SEARCH;
+  static const CATEGORIES = _Paths.CATEGORIES;
+  static const CATEGORYPRODUCT = _Paths.CATEGORYPRODUCT;
 }
 
 abstract class _Paths {
@@ -17,4 +20,7 @@ abstract class _Paths {
   static const FIRSTPAGE = '/firstpage';
   static const SECONDPAGE = '/secondpage';
   static const CARTPAGE = '/cartpage';
+  static const SEARCH = '/search';
+  static const CATEGORIES = '/categories';
+  static const CATEGORYPRODUCT = '/categoryproduct';
 }

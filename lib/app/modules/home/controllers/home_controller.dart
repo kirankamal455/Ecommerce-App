@@ -1,43 +1,45 @@
-// ignore_for_file: unnecessary_overrides
-
-import 'package:calzada/app/data/models/shop_model.dart';
+import 'package:calzada/app/data/models/product_model.dart';
 import 'package:get/get.dart';
 
 import 'package:calzada/app/data/repository/shop/i_shop_repository.dart';
-import 'package:multiple_result/multiple_result.dart';
 
-class HomeController extends GetxController with StateMixin<List<Shop>> {
+class HomeController extends GetxController with StateMixin<List<Product>> {
   IShopRepository shopRepository;
 
   HomeController({
     required this.shopRepository,
   });
+  static List<Product> mylist = [];
 
-  final count = 0.obs;
+  // String category = Get.arguments;
   @override
   void onInit() async {
     await getProduct();
+    print('kiiiiiiii$mylist');
+
     super.onInit();
   }
 
-  Future<Result<Exception, List<Shop>>> getProduct() async {
+  Future<void> getProduct() async {
     var result = await shopRepository.getAllProduct();
+    change(null, status: RxStatus.loading());
+    print(result);
+    // mylist.addAll(result as List<Product>);
+    result.when((error) {
+      change(null, status: RxStatus.error(error.toString()));
+    }, (products) {
+      change(products, status: RxStatus.success());
+    });
+  }
 
+  Future<void> sortProduct() async {
+    var result = await shopRepository.productSort();
+    change(null, status: RxStatus.loading());
     print(result);
     result.when((error) {
       change(null, status: RxStatus.error(error.toString()));
-    }, (shop) {
-      change(null, status: RxStatus.loading());
-      change(shop, status: RxStatus.success());
+    }, (products) {
+      change(products, status: RxStatus.success());
     });
-    return result;
-
-    // if (result.isSuccess()) {
-    //    change(result.isSuccess(), status: RxStatus.success());
-    //   print("succes");
-    // } else if (result.isError()) {
-    //   print("error");
-    //   change(null, status: RxStatus.error(result.getError().toString()));
-    // }
   }
 }
