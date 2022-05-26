@@ -13,8 +13,8 @@ class ShopProvider implements IShopProvider {
   ShopProvider() {
     dio = Dio();
     dio.options.baseUrl = "https://fakestoreapi.com";
-    dio.options.connectTimeout = 30000;
-    dio.options.receiveTimeout = 30000;
+    dio.options.connectTimeout = 60000;
+    dio.options.receiveTimeout = 60000;
     dio.interceptors.addAll([
       dioLoggerInterceptor,
       RetryInterceptor(
