@@ -34,21 +34,31 @@ class CartpageView extends GetView<CartpageController> {
                         itemBuilder: (BuildContext context, int index) {
                           var cartProductDatas = cartProductData[index];
 
-                          return ListTile(
-                            leading: Container(
-                              height: 70,
-                              width: 70,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    scale: 2,
-                                    image:
-                                        NetworkImage(cartProductDatas.p.image)),
-                                borderRadius: BorderRadius.circular(12),
+                          return Container(
+                            height: 60,
+                            child: Row(children: [
+                              Container(
+                                height: 70,
+                                width: 70,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      scale: 2,
+                                      image: NetworkImage(
+                                          cartProductDatas.p.image)),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
                               ),
-                            ),
-                            title: Text(cartProductDatas.p.title),
-                            trailing: Row(children: [
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(cartProductDatas.p.title),
+                              SizedBox(
+                                width: 30,
+                              ),
                               Text('Quantity :${cartProductDatas.quantity}'),
+                              SizedBox(
+                                width: 10,
+                              ),
                               IconButton(
                                 onPressed: () {
                                   controller.deleteCart(id: index);
