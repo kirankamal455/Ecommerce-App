@@ -16,36 +16,77 @@ class CartpageController extends GetxController
   }
 
   Future<void> getAllCartDetails() async {
-    List<dynamic> productids = [];
-    // List<int> productquantity = [];
-    // print(productquantity);
     var result = await shopRepository.getAllCart();
     result.when((error) {
       print('Error');
       change(null, status: RxStatus.error(error.toString()));
     }, (carts) async {
-      var productcartmodels = <CartProductModel>[];
+      var cartproductmodels = <CartProductModel>[];
       carts?.forEach((cart) async {
-        List prodidlist = cart.products.map((e) => e.productId).toList();
-        prodidlist.forEach((element) {
-          productids.add(element);
-        });
-        List prodquantitylist = cart.products.map((e) => e.quantity).toList();
+        List<int> prodidlist = cart.products.map((e) => e.productId).toList();
 
-        for (var i = 0; i < prodidlist.length; i++) {
-          int currentid = prodidlist[i];
+        print('old proid $prodidlist');
+        List<int> prodquantitylist =
+            cart.products.map((e) => e.quantity).toList();
+        print('old quantity$prodquantitylist');
 
-          ///   get all products by their ids
-          var currentproduct = await getSingleproduct(id: currentid);
-          var currentproductquantity = prodquantitylist[i];
-          if (currentproduct != null) {
-            ///make a list of cart product model from the products you get by id and their respective quantity
-            var productcartmodel = CartProductModel(
-                p: currentproduct, quantity: currentproductquantity);
-            productcartmodels.add(productcartmodel);
+        // for (var i = 0; i < prodidlist.length; i++) {
+        //   int currentid = prodidlist[i];
+
+        //   ///   get all products by their ids
+        //   var currentproduct = await getSingleproduct(id: currentid);
+        //   var currentproductquantity = prodquantitylist[i];
+        //   if (currentproduct != null) {
+        //     ///make a list of cart product model from the products you get by id and their respective quantity
+        //     var productcartmodel = CartProductModel(
+        //         p: currentproduct, quantity: currentproductquantity);
+        //     cartproductmodels.add(productcartmodel);
+        //   }
+        // }
+
+        ///cartproductmodels having same id products ,merge their quantities and remove duplicate products
+        /// p(id,quantity)
+        /// list-> [p:(1,1),p:(1,2),p:(1,3)] -> [p(1,6)]
+
+        int lengthofprodidlist = prodidlist.length;
+        print('lenth 1$lengthofprodidlist');
+        int lengthofprodidlisttoset = prodidlist.toSet().length;
+        print('toSetlength 2$lengthofprodidlisttoset');
+
+        if (lengthofprodidlist != lengthofprodidlisttoset) {
+          for (var i = 0; i <= prodidlist.length; i++) {
+            int currentid = prodidlist[i];
+            var currentproduct = await getSingleproduct(id: currentid);
+            var currentproductquantity = prodquantitylist[i];
+            if (currentproduct != null) {
+              var productcartmodel = CartProductModel(
+                  p: currentproduct, quantity: currentproductquantity);
+              cartproductmodels.add(productcartmodel);
+              print('cartproductmodels$cartproductmodels');
+            }
+          }
+        } else {
+          var initialValue = 0;
+
+          var newprodidlist = prodidlist.toSet().toList();
+
+          print('New proid list$newprodidlist');
+
+          final totalquantity = prodquantitylist.fold<int>(initialValue,
+              (previousValue, element) => previousValue + element);
+          print('new quantity$totalquantity');
+          for (var i = 0; i <= newprodidlist.length; i++) {
+            int newcurrentid = newprodidlist[i];
+            var newcurrentproduct = await getSingleproduct(id: newcurrentid);
+
+            if (newcurrentproduct != null) {
+              var productcartmodel = CartProductModel(
+                  p: newcurrentproduct, quantity: totalquantity);
+              cartproductmodels.add(productcartmodel);
+            }
           }
         }
-        change(productcartmodels, status: RxStatus.success());
+        change(cartproductmodels, status: RxStatus.success());
       });
     });
   }
